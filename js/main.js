@@ -83,6 +83,12 @@ game.checkWinner = function(){
     if (game.winner !== null) {
       console.log(game.winner);
     }
+
+    if (game.board.textContent === '') {
+        button.disabled = true;
+        button.style.background = "red";
+    }
+
     game.clearBoard = function(){
       if (game.board.dom_ready === false) {
         return;
@@ -90,9 +96,18 @@ game.checkWinner = function(){
       game.board.forEach(function(row){
         row.forEach(function(button){
           button.textContent = "";
+          button.disabled = false;
         });
       });
     };
+
+/*
+    game.blockBoard = function(){
+
+    };
+*/
+
+
 };
 //return winner if there is one else return null
 /*
@@ -103,6 +118,7 @@ document.addEventListener("DOMContentLoaded", function(){
   var rowl0 = document.querySelectorAll("#board-game li[data-y='0'] button");
   var rowl1 = document.querySelectorAll("#board-game li[data-y='1'] button");
   var rowl2 = document.querySelectorAll("#board-game li[data-y='2'] button");
+  var newgame = document.querySelector("#new-game");
   game.board[0] = Array.from(rowl0);
   game.board[1] = Array.from(rowl1);
   game.board[2] = Array.from(rowl2);
@@ -121,23 +137,33 @@ document.addEventListener("DOMContentLoaded", function(){
         if (game.winner !== null) {
           return;
         }
-        button.textContent = game.turn;
-        //button.disabled = true;
+        button.textContent = game.turn;//Ingresa valor de gamer al boton
+        button.disabled = true;//Desabilita boton jugado
 
         game.checkWinner();
         if (game.winner !== null) {
-          game.clearBoard();
+          document.querySelector("#ganador p").textContent = "GANO "+game.winner;
+          document.querySelector("#ganador").style.display = "block";
+
+          //game.blockBoard();
           game.winner = null;
-          //button.disabled = false;
         }
         if (game.nextTurn() === gamer1) {
           playing_info[0].querySelector(".status").textContent = "Juega";
-          playing_info[1].querySelector(".status").textContent = "Espera";
+          playing_info[0].querySelector(".status").style.background = "rgba(173, 255, 47, 0.75)";
+          playing_info[1].querySelector(".status").textContent = "Buuuuu";
+          playing_info[1].querySelector(".status").style.background = "rgba(173, 255, 47, 0)";
         }else {
-          playing_info[0].querySelector(".status").textContent = "Espera";
+          playing_info[0].querySelector(".status").textContent = "Maloooo";
+          playing_info[0].querySelector(".status").style.background = "rgba(173, 255, 47, 0)";
           playing_info[1].querySelector(".status").textContent = "Juega";
+          playing_info[1].querySelector(".status").style.background = "rgba(173, 255, 47, 0.75)";
         }
 
+      });
+      newgame.addEventListener("click",function(){
+        game.clearBoard();
+        document.querySelector("#ganador").style.display = "none";
       });
     });
     });
