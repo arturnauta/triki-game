@@ -83,6 +83,16 @@ game.checkWinner = function(){
     if (game.winner !== null) {
       console.log(game.winner);
     }
+    game.clearBoard = function(){
+      if (game.board.dom_ready === false) {
+        return;
+      }
+      game.board.forEach(function(row){
+        row.forEach(function(button){
+          button.textContent = "";
+        });
+      });
+    };
 };
 //return winner if there is one else return null
 /*
@@ -112,9 +122,14 @@ document.addEventListener("DOMContentLoaded", function(){
           return;
         }
         button.textContent = game.turn;
-        button.disabled = true;
+        //button.disabled = true;
 
         game.checkWinner();
+        if (game.winner !== null) {
+          game.clearBoard();
+          game.winner = null;
+          //button.disabled = false;
+        }
         if (game.nextTurn() === gamer1) {
           playing_info[0].querySelector(".status").textContent = "Juega";
           playing_info[1].querySelector(".status").textContent = "Espera";
@@ -126,4 +141,5 @@ document.addEventListener("DOMContentLoaded", function(){
       });
     });
     });
+
 });
